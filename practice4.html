@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS practice four</title>
+  <style>
+    body {
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    #contaner { 
+    width: 60%;
+    height: 50vh;
+    margin: 40px auto;
+    padding: 10px 30px;
+    background-color: rgb(49, 131, 49);
+    color: #fff;
+    border-radius: 5px;
+    }
+
+    h1 {
+      color: orange;
+      
+    }
+    h1, p {
+      text-align: center;
+      font-weight: bold;
+    }
+    #massage-el {
+      font-style: italic;
+    }
+    button {
+      display: block;
+      width: 150px;
+      height: 39px;
+      border-radius: 4px;
+      border: none;
+      background-color: goldenrod;
+      color: #016f32;
+      font-weight: bold;
+      font-size: 1rem;
+      margin: 6px auto;
+      text-align: center;
+      cursor: pointer;
+    }
+    button:active {
+      width: 155px;
+      
+    }
+    #new-card-btn {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="contaner"> 
+    <h1>
+      Blackjack
+    </h1>
+    <p id="massage-el">
+      Want to play a round?
+    </p>
+    <p id="cards-el">
+      Cards:
+    </p>
+    <p id="sum-el">
+      Sum:
+    </p>
+    <button id="start-btn" onclick="startGame()">START GAME</button>
+    <button id="new-card-btn" onclick="newCard()">NEW CARD</button>
+    <p id="player-el">
+
+    </p>
+
+  </div>
+  
+
+
+  <script>
+    const massageEl = document.getElementById("massage-el");
+    const sumEl = document.getElementById("sum-el");
+    const cardsEl = document.getElementById("cards-el");
+    const newCardBtn = document.getElementById("new-card-btn");
+
+    const playerEl = document.getElementById("player-el");
+    let player = {
+      name: "Per",
+      chips: 145
+    }
+
+    playerEl.textContent = player.name + ": $" + player.chips
+     
+    let sum = 0;
+    let hasBlackJack = false;
+    let isAlive = false;
+    let massage = "";
+
+    let cards = [];
+
+    function startGame() {
+    let firstCard =  getRandomNumber();    
+    let secondCard = getRandomNumber(); 
+    cards = [firstCard, secondCard];
+    sum = firstCard + secondCard;
+    isAlive = true;
+      renderGame()
+    }
+
+    function renderGame() {
+      cardsE = "Cards: ";
+      for(let i = 0; i < cards.length; i++) {
+       cardsE += cards[i] + ", ";
+      }
+
+      sumEl.textContent = "Sum: " + sum;
+      cardsEl.textContent =  cardsE;  
+      //"Cards: " + cards[0] + " and " + cards[1];
+      if(sum <= 20) {
+        massage = "Do you want draw a new card?";
+        newCardBtn.style.display = "block";
+        massageEl.style.color = "white";
+      
+      } else if(sum === 21) {
+        massage = "Wohoo!, you've got Blackjack";
+        hasBlackJack = true;
+        massageEl.style.color = "orange";
+      } else {
+        massage = "You are out of the game!";
+        massageEl.style.color = "red";
+        isAlive = false;
+        //newCardBtn.style.display = "none";
+        
+      }
+      massageEl.textContent = massage;   
+    }
+
+    function newCard() {
+      if (isAlive === true && hasBlackJack === false) {
+       let card = getRandomNumber()           
+       cards.push(card);
+       sum += card;
+       renderGame()
+      }
+       
+    }
+
+    function getRandomNumber() {
+      let randomNum = Math.floor(Math.random()*13) + 1;
+      if(randomNum === 1) {
+        return 11;
+      } else if(randomNum > 10) {
+        return 10;
+      } else {
+        return randomNum;
+      }
+    }
+
+    
+  </script> 
+</body>
+</html>
